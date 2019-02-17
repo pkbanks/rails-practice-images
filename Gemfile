@@ -19,6 +19,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'file_validators'
+gem "fog-aws"
 
 
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
