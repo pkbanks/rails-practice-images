@@ -8,6 +8,7 @@ CarrierWave.configure do |config|
         region:                Rails.application.credentials.aws['S3_REGION'],
     }
     config.fog_directory  = Rails.application.credentials.aws['S3_BUCKET']
+    config.storage = :fog
   else
     config.storage = :file
     config.enable_processing = Rails.env.development?
