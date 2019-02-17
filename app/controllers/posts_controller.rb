@@ -24,18 +24,27 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(post_params)
-    @post.user = User.first
-
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to posts_path, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+    if post_params[:attachments.empty?]
+      @post = Post.new(post_params)
+      @post.user = User.first
+      respond_to do |format|
+        if @post.save
+          format.html { redirect_to posts_path, notice: 'Post was successfully created.' }
+          format.json { render :show, status: :created, location: @post }
+        else
+          format.html { render :new }
+          format.json { render json: @post.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      posts =[]
+      post_params[:attachments].each do |image|
+        posts << Post.create(user: User.first, image: image)
+      end
+      redirect_to posts_path
     end
+
+    
   end
 
   # PATCH/PUT /posts/1
@@ -70,6 +79,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:user_id, :image, :image_cache, :remove_image)
+      params.require(:post).permit(:user_id, :image, :image_cache, :remove_image, attachments: [])
     end
 end
