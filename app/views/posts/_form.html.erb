@@ -1,22 +1,19 @@
-<%= form_with(model: post, local: true) do |form| %>
-  <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<%= render 'shared/errors', object: post %>
+<% if post.image? %>
+    <%= image_tag post.image.thumb.url %>
+    <div>
+      <%= label_tag :remove_image do %>
+        Remove image
+        <%= f.check_box :remove_image %>
       <% end %>
-      </ul>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
+<% end %>
+<%= form_for post do |f| %>
+  <div>
+    <%= f.label :image %>
+    <%= f.file_field :image %>
+    <%= f.hidden_field :image_cache %>
   </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+ 
+  <%= f.submit %>
 <% end %>
